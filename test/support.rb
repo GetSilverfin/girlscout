@@ -16,6 +16,8 @@ require 'minitest/autorun'
 
 FIXTURES_PATH = File.absolute_path("#{File.dirname(__FILE__)}/fixtures")
 TEST_KEY      = 'a20f4aeeb7b77c37981b61153076ace5c88893db'
+TEST_CLIENT_ID     = ''
+TEST_CLIENT_SECRET = ''
 
 Minitest::Reporters.use! [
   Minitest::Reporters::DefaultReporter.new(color: true)

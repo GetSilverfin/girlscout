@@ -6,7 +6,7 @@ module GirlScout
 
     class << self
       def find(id)
-        Conversation.new(resource["/#{id}"].get['item'])
+        Conversation.new(resource["/#{id}"].get)
       end
 
       def create(attributes)
@@ -14,10 +14,15 @@ module GirlScout
         attributes['reload'] ||= true
         Conversation.new(resource.post(payload: attributes)['item'])
       end
+
+      def create_note(id, attributes)
+        attributes = attributes.as_json if attributes.respond_to?(:as_json)
+        Thread.new(resource["/#{id}/notes"].post(payload: attributes))
+      end
     end
 
     def customer
-      @customer ||= Customer.new(self['customer'] || {})
+      @customer ||= Customer.new(self['createdBy'] || {})
     end
 
     def threads

@@ -11,7 +11,7 @@ module GirlScout
     end
 
     def url
-      "#{@url}.json"
+      @url
     end
 
     def [](path)
@@ -20,11 +20,11 @@ module GirlScout
 
     METHODS.each do |method|
       define_method(method) do |payload: nil, query: nil|
-        options = { method: method }
+        options = { method: method, headers: { 'Authorization' => "Bearer #{Config.oauth_token}",
+                                               'Content-Type'  => 'application/json'} }
         if payload
           options[:body] = JSON.generate(payload)
           options[:headers] ||= {}
-          options[:headers]['Content-Type'] = 'application/json'
         end
         options[:query] = query if query
 
@@ -33,13 +33,12 @@ module GirlScout
     end
 
     def request(options = {})
-      auth = { user: Config.api_key, password: 'X' }
-      response = Excon.new(url, auth).request(options)
+      response = Excon.new(url).request(options)
       if response.status >= 400 && response.status < 600
-        raise GirlScout::Error, JSON.parse(response.body)
+        raise GirlScout::Error, (JSON.parse(response.body) rescue {})
       end
 
-      JSON.parse(response.body)
+      JSON.parse(response.body) rescue {}
     end
   end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'excon'
+require 'oauth2'
 
 require 'girlscout/resource'
 require 'girlscout/config'

@@ -13,7 +13,8 @@ module GirlScout
 
     def setup
       super
-      Config.api_key = TEST_KEY
+      Config.client_id     = TEST_CLIENT_ID
+      Config.client_secret = TEST_CLIENT_SECRET
     end
 
     def run

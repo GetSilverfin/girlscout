@@ -14,8 +14,12 @@ module GirlScout
     end
 
     def items
-      @items ||= (@attributes['items'] || []).map do |attr|
-        @item_class.new(attr)
+      @items ||= begin
+        args = ['Embedded'].concat(item_class.resource_path.split("/").tap { |ary| ary.delete("") })
+
+        (@attributes.dig(*args) || []).map do |attr|
+          @item_class.new(attr)
+        end
       end
     end
 
