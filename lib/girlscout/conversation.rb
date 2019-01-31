@@ -5,6 +5,14 @@ module GirlScout
     endpoint '/conversations'
 
     class << self
+      def all(options = {})
+        # TO DO: put this in Resource
+        params = options.to_a.map { |x| "#{x[0]}=#{x[1]}" }.join("&")
+        params = "?#{params}" unless params == ""
+
+        List.new(resource[params].get, Conversation)
+      end
+
       def find(id)
         Conversation.new(resource["/#{id}"].get)
       end
