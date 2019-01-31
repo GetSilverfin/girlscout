@@ -5,8 +5,12 @@ module GirlScout
     endpoint '/users'
 
     class << self
-      def all
-        List.new(resource.get, User)
+     def all(options = {})
+        # TODO: put this in Resource
+        params = options.to_a.map { |x| "#{x[0]}=#{x[1]}" }.join("&")
+        params = "?#{params}" unless params == ""
+
+        List.new(resource[params].get, User)
       end
 
       def find(id)
